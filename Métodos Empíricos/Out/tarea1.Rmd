@@ -1,0 +1,198 @@
+---
+title: "Métodos Empíricos en Finanzas"
+subtitle: "Tarea 1"
+author: "Gibrán Peniche González-Carpio"
+header-includes: 
+  - \usepackage{fancyhdr}
+date: "2020-02-04"
+output: 
+   pdf_document:
+    highlight: 'kate'
+    toc: TRUE
+    number_sections: TRUE
+editor_options: 
+  chunk_output_type: console
+mainfont: Bookman Old Style
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE) # Esta opci??n hace que por default se imprima el c??digo
+knitr::opts_chunk$set(warning = FALSE) # Estas dos opciones evitan que se impriman mensajes a la hora de generar el pdf
+knitr::opts_chunk$set(message= FALSE)
+
+#Estas L??neas sirven para ajustar tama??o y orientaci??n de las gr??ficas
+knitr::opts_chunk$set(fig.width=8)
+knitr::opts_chunk$set(fig.height=5)
+knitr::opts_chunk$set(fig.align='center')
+
+theme_pro <- function(){
+  theme_minimal() +
+    theme(
+      text = element_text(family = "Bookman", color = "gray25"),
+      plot.title = element_text(color = "#2C3744", 
+                              size = 18, 
+                              face = "bold"),
+      plot.subtitle = element_text(color = "#A6A6A7",
+                                 size = 16,
+                                 face = "bold"),
+      plot.caption = element_text(color = "#A6A6A7",
+                                size = 12,
+                                face = "bold"),
+      plot.background = element_rect(fill = "white"),
+      plot.margin = unit(c(5, 10, 5, 10), units = "mm"),
+      axis.title.x = element_text(color = "#FF7B05",
+                                size = 12,
+                                face = "bold"),
+      axis.title.y = element_text(color = "#FF7B05",
+                                size = 12,
+                                face = "bold"),
+      axis.text.x = element_text(color = "#531F7E",
+                               face = "bold"),
+      axis.text.y = element_text(color = "#531F7E",
+                               face = "bold"),
+      axis.line = element_line(color="#A6A6A7"),
+      strip.text = element_text(color = "#2C3744",
+                                face = "bold"),
+      legend.title = element_text(color ="#A6A6A7",
+                                  face = "bold"),
+      legend.text = element_text(color = "#2C3744",
+                                 face = "bold")
+    )
+} # Tema personalizado para gr??ficas
+
+```
+
+\thispagestyle{empty}
+\pagebreak
+\newpage
+\pagenumbering{arabic} 
+
+\fancyhead[L]{\thepage}
+\fancyfoot[C]{Gibrán Peniche}
+\pagestyle{fancy}
+\addtolength{\headheight}{1.0cm}
+\pagestyle{fancyplain}
+
+
+```{r libraries}
+
+# Librerias
+library(dplyr)
+library(tidyverse)
+
+```
+
+
+# Proceso Xt
+
+  d. Simular 10 trayectorias
+  
+```{r p1}
+
+# Simulamos 10 trayectorias de 10 pasos cada una
+
+set.seed(123) #semilla de replica 
+
+paths <- data_frame(y0 = seq(from = 0, to = 0, length.out = 10))  
+          
+for (i in 2:11) {
+  
+  paths[,i] <- rnorm(10,0,0.2) # Generamos la secuencia Xt
+  
+}
+
+colnames(paths) <- c(0,1,2,3,4,5,6,7,8,9,10)
+
+# Creamos DataFrame largo con una etiqueta para cada trayectoria
+paths <- paths %>% 
+         mutate( Trayectoria = seq(from = 1, to = 10, length.out = 10)) 
+         
+
+# Gráfica
+paths %>% gather("t", "Value", -Trayectoria) %>% 
+          mutate(t = as.numeric(t),
+                Trayectoria = as.factor(Trayectoria)) %>% 
+          ggplot(aes(x = t, y = Value, group = Trayectoria, color=Trayectoria )) +
+          geom_point() +
+          geom_line() +
+          theme_pro() +
+          scale_x_continuous(breaks =0:10) +
+          labs(title = "Trayectorias simuladas Xt")
+
+```
+
+\pagebreak
+
+# Proceso Wt
+
+```{r p3}
+
+zt <- NULL
+
+for (i in 1:(ncol(paths)-1)) {
+  
+  if(i == 1){
+    zt[i] <- paths[i]
+    
+  }else{
+    
+    zt[i] <- zt[i-1] + paths[i] # Construir Zt
+  }
+ 
+}
+
+# Construimos Objeto DF
+zt_df <- data_frame(z0 = unlist(zt[1]),
+                    z1 = unlist(zt[2]),
+                    z2 = unlist(zt[3]),
+                    z3 = unlist(zt[4]),
+                    z4 = unlist(zt[5]),
+                    z5 = unlist(zt[6]),
+                    z6 = unlist(zt[7]),
+                    z7 = unlist(zt[8]),
+                    z8 = unlist(zt[9]),
+                    z9 = unlist(zt[10]),
+                    z10 = unlist(zt[11])
+                    
+                    )
+
+wt <- NULL
+
+for (i in 2:ncol(zt_df)) {
+  
+  wt[i-1] <- zt_df[,i]- zt_df[,i-1] #Construimos WT
+}
+
+# Construimos objeto DF
+wt_df <- data_frame("0" = unlist(zt_df[1]),
+                    "1" = unlist(zt_df[2]),
+                    "2" = unlist(zt_df[3]),
+                    "3" = unlist(zt_df[4]),
+                    "4" = unlist(zt_df[5]),
+                    "5" = unlist(zt_df[6]),
+                    "6" = unlist(zt_df[7]),
+                    "7" = unlist(zt_df[8]),
+                    "8" = unlist(zt_df[9]),
+                    "9" = unlist(zt_df[10]),
+                    Trayectoria = seq(from = 1, 
+                                      to = 10, 
+                                      length.out = 10)
+                    )
+
+# Gráfica
+wt_df %>% gather("t", "Value", -Trayectoria) %>% 
+          mutate(t = as.numeric(t),
+                Trayectoria = as.factor(Trayectoria)) %>% 
+          ggplot(aes(x = t, 
+                     y = Value, 
+                     group = Trayectoria, 
+                     color=Trayectoria )) +
+          geom_point() +
+          geom_line() +
+          theme_pro() +
+          scale_x_continuous(breaks =0:10) +
+          labs(title = "Trayectorias simuladas Wt")
+
+
+```
+

@@ -1,0 +1,163 @@
+---
+title: "Modelos Actuariales No Vida: Enfoque Riesgo Individual"
+subtitle: "Implementación Modelo Jerárquico para cáclulo de primas"
+author: "Gibrán Peniche González-Carpio"
+header-includes: 
+  - \usepackage{fancyhdr}
+date: "Otoño 2019"
+output: 
+   pdf_document:
+    toc: TRUE
+    highlight: 'kate'
+    number_sections: TRUE
+editor_options: 
+  chunk_output_type: console
+mainfont: Bookman Old Style
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE) # Esta opci??n hace que por default se imprima el c??digo
+knitr::opts_chunk$set(warning = FALSE) # Estas dos opciones evitan que se impriman mensajes a la hora de generar el pdf
+knitr::opts_chunk$set(message= FALSE)
+
+#Estas L??neas sirven para ajustar tama??o y orientaci??n de las gr??ficas
+knitr::opts_chunk$set(fig.width=8)
+knitr::opts_chunk$set(fig.height=5)
+knitr::opts_chunk$set(fig.align='center')
+
+theme_pro <- function(){
+  theme_minimal() +
+    theme(
+      text = element_text(family = "Bookman", color = "gray25"),
+      plot.title = element_text(color = "#2C3744", 
+                              size = 18, 
+                              face = "bold"),
+      plot.subtitle = element_text(color = "#A6A6A7",
+                                 size = 16,
+                                 face = "bold"),
+      plot.caption = element_text(color = "#A6A6A7",
+                                size = 12,
+                                face = "bold"),
+      plot.background = element_rect(fill = "white"),
+      plot.margin = unit(c(5, 10, 5, 10), units = "mm"),
+      axis.title.x = element_text(color = "#FF7B05",
+                                size = 12,
+                                face = "bold"),
+      axis.title.y = element_text(color = "#FF7B05",
+                                size = 12,
+                                face = "bold"),
+      axis.text.x = element_text(color = "#531F7E",
+                               face = "bold"),
+      axis.text.y = element_text(color = "#531F7E",
+                               face = "bold"),
+      axis.line = element_line(color="#A6A6A7"),
+      strip.text = element_text(color = "#2C3744",
+                                face = "bold")
+    )
+} # Tema personalizado para gr??ficas
+```
+
+\thispagestyle{empty}
+
+\newpage
+\pagenumbering{arabic} 
+
+\fancyhead[L]{\thepage}
+\fancyhead[R]{ITAM}
+\fancyfoot[C]{Gibrán Peniche}
+\pagestyle{fancy}
+\addtolength{\headheight}{1.0cm}
+\pagestyle{fancyplain}
+
+
+```{r libraries, include=FALSE}
+
+library(tidyverse)
+library(tidyquant)
+library(astsa)
+library(pander)
+
+set.seed(1234)
+
+```
+
+# ARMA(2,0)
+## Simulación
+
+```{r sim1, echo=FALSE}
+
+
+arma2_0 <- data_frame(n = seq(from = 1, to = 200, by =1),  
+                       arma = arima.sim(list(order=c(2,0,0),ar=c(1.5,-0.9)),n=200))
+
+plot(arma2_0$arma)
+
+```
+
+\pagebreak
+
+
+## ACF y PACF
+
+```{r ACF1, echo=FALSE}
+
+pander(acf2(arma2_0$arma), caption = "ACF Y PACF")
+
+
+```
+
+\pagebreak
+
+## Ajuste
+
+```{r ajuste1, echo=FALSE, verbose = FALSE , results='hide'}
+sim1fit1 <− sarima(arma2_0$arma,p=2,d=0,q=0)
+
+pander(sim1fit1$ttable, caption = "Ajuste Modelo")
+```
+
+
+
+# ARMA(0,1)
+## Simulación
+
+```{r sim2, echo=FALSE}
+
+
+arma0_1 <- data_frame(n = seq(from = 1, to = 200, by =1),  
+                       arma = arima.sim(list(order=c(0,0,1),ma=c(0.8)),n=200))
+
+plot(arma0_1$arma)
+
+```
+
+\pagebreak
+
+## ACF y PACF
+
+```{r ACF2, echo=FALSE}
+
+pander(acf2(arma0_1$arma), caption = "ACF y PACF")
+
+
+```
+
+\pagebreak
+
+## Ajuste
+
+```{r ajuste2, echo=FALSE, verbose = FALSE , results='hide'}
+sim1fit2 <− sarima(arma0_1$arma,p=2,d=0,q=0)
+
+pander(sim1fit2$ttable, caption = "Ajuste Modelo")
+```
+
+# Portafolio
+## Importación
+
+```{r tidyquant, echo=false}
+
+symbols <- 
+
+```
+

@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1582052345277.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "7F9C7802",
+    "lastKnownWriteTime" : 0,
+    "last_content_update" : 1582052345277,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "11CB7308",
+        "caption" : "acf",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=acf&cache_key=11CB7308",
+        "displayedObservations" : 25,
+        "environment" : "",
+        "expression" : "acf",
+        "object" : "acf",
+        "preview" : 0,
+        "totalObservations" : 25,
+        "variables" : 2
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
