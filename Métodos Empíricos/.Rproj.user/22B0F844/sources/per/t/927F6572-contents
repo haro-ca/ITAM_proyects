@@ -155,9 +155,9 @@ pander(sim1fit2$ttable, caption = "Ajuste Modelo")
 # Portafolio
 ## Importación
 
-```{r tidyquant, echo=false}
+```{r import, echo=FALSE}
 
-symbols <- 
+symbols <- 0
 
 ```
 

@@ -151,3 +151,13 @@ sim1fit2 <− sarima(arma0_1$arma,p=2,d=0,q=0)
 
 pander(sim1fit2$ttable, caption = "Ajuste Modelo")
 ```
+
+# Portafolio
+## Importación
+
+```{r import, echo=FALSE}
+
+symbols <- 0
+
+```
+
