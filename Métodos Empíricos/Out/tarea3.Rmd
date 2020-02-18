@@ -1,6 +1,6 @@
 ---
-title: "Modelos Actuariales No Vida: Enfoque Riesgo Individual"
-subtitle: "Implementación Modelo Jerárquico para cáclulo de primas"
+title: "Tarea 3"
+subtitle: "Métodos Émpíricos"
 author: "Gibrán Peniche González-Carpio"
 header-includes: 
   - \usepackage{fancyhdr}
