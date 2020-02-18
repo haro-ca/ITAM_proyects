@@ -1,7 +1,7 @@
 ---
 title: "Tarea 3"
 subtitle: "Métodos Émpíricos"
-author: "Gibrán Peniche González-Carpio"
+author: "Gibrán Peniche, Regina Tinoco"
 header-includes: 
   - \usepackage{fancyhdr}
 date: "Otoño 2019"
