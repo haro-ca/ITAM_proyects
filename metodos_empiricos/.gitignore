@@ -1,0 +1,7 @@
+# Hidden files
+.Rproj.user
+.Rhistory
+
+# General files
+*.csv
+*.tsv
